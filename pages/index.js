@@ -1,9 +1,13 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import React from "react";
+import Head from "../src/components/Head";
+import ScreenHome from "../src/patterns/screens/Home";
 
 export default function Home() {
   return (
-    <p> Hello World</p>
-  )
+    <React.Fragment>
+      <Head title="Cartoleiro Eficaz"></Head>
+
+      <ScreenHome />
+    </React.Fragment>
+  );
 }
