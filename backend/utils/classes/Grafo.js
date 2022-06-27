@@ -1,19 +1,35 @@
-import {Aresta} from '../utils/classes/Aresta';
+import {Vertice} from '../utils/classes/Vertice'
 
 class Grafo {
-    constructor(elementos) {
-      this.elementos = elementos
+    constructor(vertices=[], arestas=[]) {
+      this.vertices = vertices
+      this.arestas = arestas
     }
 
-    get elementos(){
-        return this.elementos
+    get vertices(){
+        return this.vertices
+    }
+
+    get arestas(){
+        return this.arestas
     }
 
     getVizinhos(vertice){
         var vizinhos = []
-        for(var i=0;i<this.elementos.length;i++){
-            if(elementos[i].pred==vertice){
-                vizinhos.push(this.elementos[i].id)
+        for(var i=0;i<this.vertices.length;i++){
+            if(this.vertices[i].pred==vertice){
+                vizinhos.push(this.vertices[i].id)
+            }
+        }
+        return vizinhos
+    }
+
+    findEdge(u,v){
+        for(var i=0; i < this,vertices.length; i ++){
+            for(var j=0; j < this.vertices.length; j++){
+                if(vertices[i].id == u && vertices[j].id == v){
+                    
+                }
             }
         }
     }

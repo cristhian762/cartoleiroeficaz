@@ -1,4 +1,4 @@
-class Aresta {
+class VD {
     constructor(pred, custo) {
       this.pred = pred
       this.custo = custo
@@ -11,4 +11,5 @@ class Aresta {
     get custo(){
         return this.custo
     }
+
 }
