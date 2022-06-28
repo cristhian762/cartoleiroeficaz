@@ -1,4 +1,4 @@
-class arestaKruskal {
+class aresta {
     constructor(origem, destino, peso) {
       this.origem = origem
       this.destino = destino

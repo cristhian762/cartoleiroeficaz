@@ -1,7 +1,8 @@
 class Jogador {
-    constructor(id, nome, foto, iconTime, idPosicao, preco, mediaPontos, minValorizar) {
+    constructor(id, nome, status, foto, iconTime, idPosicao, preco, mediaPontos, minValorizar) {
         this.id = id
         this.nome = nome
+        this.status = status
         this.foto = foto
         this.iconTime = iconTime
         this.idPosicao = idPosicao
@@ -12,6 +13,10 @@ class Jogador {
 
     get id(){
         return this.id
+    }
+
+    get status(){
+        return this.status
     }
 
     get nome(){
