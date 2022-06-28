@@ -25,12 +25,11 @@ class Grafo {
     }
 
     findEdge(u,v){
-        for(var i=0; i < this,vertices.length; i ++){
-            for(var j=0; j < this.vertices.length; j++){
-                if(vertices[i].id == u && vertices[j].id == v){
-                    
-                }
+        for(var i=0; i < this, arestas.length; i ++){
+            if(arestas[i].origem == u && arestas[i].destino == v){
+                return arestas[i]
             }
         }
+        return false
     }
 }

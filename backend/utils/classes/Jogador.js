@@ -1,12 +1,13 @@
 class Jogador {
-    constructor(id, nome, foto, iconTime, preco, mediaPontos, minValorizar) {
+    constructor(id, nome, foto, iconTime, idPosicao, preco, mediaPontos, minValorizar) {
         this.id = id
         this.nome = nome
         this.foto = foto
         this.iconTime = iconTime
+        this.idPosicao = idPosicao
         this.preco = preco
         this.mediaPontos = mediaPontos
-        this.minValorizar = preco/(minValorizar/mediaPontos)
+        this.coef = preco/(minValorizar/mediaPontos)
     }
 
     get id(){
@@ -33,7 +34,7 @@ class Jogador {
         return this.mediaPontos
     }
 
-    get minValorizar(){
-        return this.minValorizar
+    get coef(){
+        return this.coef
     }
 }
