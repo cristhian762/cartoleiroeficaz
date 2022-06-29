@@ -2,7 +2,7 @@ import {Aresta} from '../utils/classes/Aresta'
 import {VD} from '../utils/classes/VD'
 import {Jogador} from '../utils/classes/Jogador'
 
-function kruskal(jogadores, formacao){
+function kruskal(jogadores, formacao, preco=-1){
     var dVertices = []
     var vertices = []
     var arestas = []
@@ -17,7 +17,7 @@ function kruskal(jogadores, formacao){
     for(var i = 0; vs.length; i++){
         var a = new VD(null, 9999999)
         var vd = (vs[i], a)
-        dVertices.add(vd)
+        dVertices.add(vs[i],vd)
         vertices.push(vs[i].id)
     }
 
@@ -30,18 +30,57 @@ function kruskal(jogadores, formacao){
 
     arestas.sort()
 
-    for(var l=0; l< arestas.length; l++){
-        var posicao = jogadores.getJogador(arestas[l].destino)
-        if(l==0){
-            if(dVertices.get(arestas[l].origem).pred == null){
-                dVertices.get(arestas[l].origem).pred = arestas[l].destino
-            } else if (dVertices.get(arestas[l].destino).pred == null){
-                dVertices.get(arestas[l].destino).pred = arestas[l].origem;
+    if(preco > -1){
+        for(var l=0; l< arestas.length; l++){
+            var posicao = jogadores.getJogador(arestas[l].destino)
+            if(l==0){
+                if(dVertices.get(arestas[l].origem).pred == null){
+                    dVertices.get(arestas[l].origem).pred = arestas[l].destino
+                } else if (dVertices.get(arestas[l].destino).pred == null){
+                    dVertices.get(arestas[l].destino).pred = arestas[l].origem;
+                }
+        
+                if(dVertices.get(arestas[l].origem).pred == arestas[l].destino && dVertices.get(arestas[l].destino).pred == arestas[l].origem){
+                    dVertices.get(arestas[l].destino).pred = null;
+                }
+            } else {
+                if(dVertices.get(arestas[l].origem).pred == null){
+                    dVertices.get(arestas[l].origem).pred = arestas[l].destino
+                } else if (dVertices.get(arestas[l].destino).pred == null){
+                    dVertices.get(arestas[l].destino).pred = arestas[l].origem;
+                }
+        
+                if(dVertices.get(arestas[l].origem).pred == arestas[l].destino && dVertices.get(arestas[l].destino).pred == arestas[l].origem){
+                    dVertices.get(arestas[l].destino).pred = null;
+                }
             }
-    
-            if(dVertices.get(arestas[l].origem).pred == arestas[l].destino && dVertices.get(arestas[l].destino).pred == arestas[l].origem){
-                dVertices.get(arestas[l].destino).pred = null;
+        }
+    } else {
+        for(var l=0; l< arestas.length; l++){
+            var posicao = jogadores.getJogador(arestas[l].destino)
+            if(l==0){
+                if(dVertices.get(arestas[l].origem).pred == null){
+                    dVertices.get(arestas[l].origem).pred = arestas[l].destino
+                } else if (dVertices.get(arestas[l].destino).pred == null){
+                    dVertices.get(arestas[l].destino).pred = arestas[l].origem;
+                }
+        
+                if(dVertices.get(arestas[l].origem).pred == arestas[l].destino && dVertices.get(arestas[l].destino).pred == arestas[l].origem){
+                    dVertices.get(arestas[l].destino).pred = null;
+                }
+            } else {
+                if(dVertices.get(arestas[l].origem).pred == null){
+                    dVertices.get(arestas[l].origem).pred = arestas[l].destino
+                } else if (dVertices.get(arestas[l].destino).pred == null){
+                    dVertices.get(arestas[l].destino).pred = arestas[l].origem;
+                }
+        
+                if(dVertices.get(arestas[l].origem).pred == arestas[l].destino && dVertices.get(arestas[l].destino).pred == arestas[l].origem){
+                    dVertices.get(arestas[l].destino).pred = null;
+                }
             }
         }
     }
+
+    return dVertices
 }

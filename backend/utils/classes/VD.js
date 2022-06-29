@@ -11,5 +11,4 @@ class VD {
     get custo(){
         return this.custo
     }
-
 }
