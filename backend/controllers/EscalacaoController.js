@@ -7,10 +7,11 @@ module.exports = {
   async generate (request, response) {
     const apiResponse = await axios.get('https://api.cartola.globo.com/atletas/mercado')
     const { formacao, preco } = request.body
+    const mercado = apiResponse.data
     var jogadores = []
 
-    var atletas = apiResponse.atletas
-    var clubes = apiResponse.clubes
+    var atletas = mercado.atletas
+    var clubes = mercado.clubes
     for(var i=0; i<atletas.length; i++){
       if(atletas[i].status_id == 7){
         var jogador = {

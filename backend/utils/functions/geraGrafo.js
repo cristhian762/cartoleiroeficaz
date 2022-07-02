@@ -1,26 +1,38 @@
 async function geraGrafo(jogadores, tipo){
     var arestas = []
     if(tipo == 1){
-        for(var j=0; j<jogadores.length; j++){
-            for(var k=j+1; k<jogadores.length; k++){
-                var a = {
-                    origem: jogadores[j].idJogador, 
-                    peso: jogadores[j].preco + jogadores[k].preco, 
-                    destino: jogadores[k].idJogador
+        var i = 0
+        for(var jog of jogadores){
+            var j = 0
+            for(var jog2 of jogadores){
+                if(j>= i+1 && j <= jogadores.length){
+                    var a = {
+                        origem: jog.idJogador, 
+                        peso: jog.preco + jog2.preco, 
+                        destino: jog2.idJogador
+                    }
+                    arestas.push(a)
                 }
-                arestas.push(a)
+                j++
             }
+            i++
         }
     } else {
-        for(var j=0; j<jogadores.length; j++){
-            for(var k=j+1; k<jogadores.length; k++){
-                var a = {
-                    origem: jogadores[j].idJogador,
-                    peso: jogadores[j].coef + jogadores[k].coef,
-                    destino: jogadores[k].idJogador
+        var i = 0
+        for(var jog of jogadores){
+            var j = 0
+            for(var jog2 of jogadores){
+                if(j>= i+1 && j <= jogadores.length){
+                    var a = {
+                        origem: jog.idJogador, 
+                        peso: jog.coef + jog2.coef, 
+                        destino: jog2.idJogador
+                    }
+                    arestas.push(a)
                 }
-                arestas.push(a)
+                j++
             }
+            i++
         }
     }
     var g = {

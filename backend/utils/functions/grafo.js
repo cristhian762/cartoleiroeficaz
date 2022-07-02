@@ -1,29 +1,30 @@
 module.exports = {
     async getVizinhos(grafo, vertice){
         var vizinhos = []
-        grafo.vertices.forEach(async (ver) => {
-            if(ver.pred==vertice){
-                vizinhos.push(ver.idJogador)
+        for(var ar of grafo.arestas){
+            if(ar.origem==vertice){
+                vizinhos.push(ar.destino)
             }
-        });
+        }
         return vizinhos
     },
 
     async getJogador(grafo, id){
-        for(var i=0; i<grafo.vertices.length; i++){
-            if(vertices[i].idJogador == id){
-                return vertices[i]
+        for(var ver of grafo.vertices){
+            if(ver.idJogador == id){
+                return ver
             }
         }
         return false
     },
 
-    async findEdge(grafo, u,v){
-        for(var i=0; i < grafo.arestas.length; i ++){
-            if(arestas[i].origem == u && arestas[i].destino == v){
-                return arestas[i]
+    async findEdge(grafo, u, v){
+        var peso = false
+        for(var ar of grafo.arestas){
+            if(ar.origem == u && ar.destino == v){
+                peso = ar.peso
             }
         }
-        return false
+        return peso
     }
 }

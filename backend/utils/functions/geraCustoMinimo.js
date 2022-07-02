@@ -1,24 +1,25 @@
 const kruskal = require('./kruskal');
+const grafo = require('./grafo');
 
 async function geraCustoMinimo(jogadores, formacao){
     var preds = []
     var suces = []
-    var arvore = kruskal(jogadores, formacao)
+    var arvore = await kruskal(jogadores, formacao)
     var custoMinimo = 0
 
-    for(var i=0; i<jogadores.length; i++){
-        var v = arvore[jogadores[i].idJogador].pred
+    for(var jog of jogadores.vertices){
+        var v = arvore[jog.idJogador].pred
         if(v != null){
             preds.push(v)
-            suces.push(jogadores[i].idJogador)
+            suces.push(jog.idJogador)
         }
     }
 
     var l1 = preds.concat(suces);
-    const ids_jogadores = [...l1]
+    const ids_jogadores = [...new Set(l1)]
 
-    for(var j=0;j<ids_jogadores.length;j++){
-        var jogador = jogadores.getJogador(ids_jogadores[j])
+    for(var id of ids_jogadores){
+        var jogador = await grafo.getJogador(jogadores, id)
         custoMinimo = custoMinimo + jogador.preco
     }
 

@@ -1,4 +1,5 @@
 const kruskal = require('./kruskal');
+const grafo = require('./grafo');
 
 async function geraEscalacao(jogadores, formacao, preco){
     var preds = []
@@ -6,28 +7,28 @@ async function geraEscalacao(jogadores, formacao, preco){
     var lista_jogadores = []
     var capitao = 0
     var precoTotal = 0
-    var arvore = kruskal(jogadores, formacao, preco)
+    var arvore = await kruskal(jogadores, formacao, preco)
 
-    for(var i=0; i<jogadores.length; i++){
-        var v = arvore[jogadores[i].idJogador].pred
+    for(var jog of jogadores.vertices){
+        var v = arvore[jog.idJogador].pred
         if(v != null){
             preds.push(v)
-            suces.push(jogadores[i].idJogador)
+            suces.push(jog.idJogador)
         }
     }
 
     var l1 = preds.concat(suces);
-    const ids_jogadores = [...l1]
+    const ids_jogadores = [...new Set(l1)]
 
     var maiormedia = -100
     for(var j=0;j<ids_jogadores.length;j++){
-        var jogador = jogadores.getJogador(ids_jogadores[j])
-        if(jogador.mediaPontos > maiormedia){
+        var jogador = await grafo.getJogador(jogadores, ids_jogadores[j])
+        if(jogador.idPosicao != 6 && jogador.media > maiormedia){
             capitao = jogador.idJogador
-            maiormedia = jogador.mediaPontos
+            maiormedia = jogador.media
         }
         precoTotal = precoTotal + jogador.preco
-        lista_jogadores.add(jogador)
+        lista_jogadores.push(jogador)
     }
 
     return [capitao, precoTotal, lista_jogadores]
