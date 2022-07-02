@@ -6,7 +6,7 @@ async function kruskal(jogadores, formacao, preco=-1){
     var arestas = []
     var escalacoes = [[0,3,4,3], [0,3,5,2], [2,2,3,3], [2,2,4,2], [2,2,5,1], [2,3,3,2], [2,3,4,1]]
 
-    var maximos = [1,escalacoes[formacao][0],escalacoes[formacao][1],escalacoes[formacao][2],escalacoes[formacao][3],1]
+    var maximos = [1,escalacoes[formacao-1][0],escalacoes[formacao-1][1],escalacoes[formacao-1][2],escalacoes[formacao-1][3],1]
     var quant_posicao = [0,0,0,0,0,0]
     var quant_jogadores = 0
 
