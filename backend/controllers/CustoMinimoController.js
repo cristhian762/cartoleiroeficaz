@@ -1,35 +1,38 @@
 const axios = require('axios');
-import {Jogador} from '../utils/classes/Jogador'
-import {geraGrafo} from './geraGrafo'
-import {geraCustoMinimo} from './geraCustoMinimo'
+const geraGrafo = require('../utils/functions/geraGrafo');
+const geraCustoMinimo = require('../utils/functions/geraCustoMinimo');
 
 module.exports = {
 
   async generate (request, response) {
     const apiResponse = await axios.get('https://api.cartola.globo.com/atletas/mercado')
+    const mercado = apiResponse.data
     const { formacao } = request.body
     var jogadores = []
 
-    var atletas = apiResponse.atletas
-    var clubes = apiResponse.clubes
+    var atletas = mercado.atletas
+    var clubes = mercado.clubes
     for(var i=0; i<atletas.length; i++){
-      var jogador = new Jogador(
-        atletas[i].atleta_id,
-        atletas[i].apelido,
-        atletas[i].status_id,
-        atletas[i].foto,
-        clubes[atletas[i].atleta_id].escudos["60x60"],
-        atletas[i].posicao_id,
-        atletas[i].preco_num,
-        atletas[i].media_num,
-        atletas[i].minimo_para_valorizar
-      )
-      jogadores.add(jogador)
+      if(atletas[i].status_id == 7){
+        var jogador = {
+          idJogador: atletas[i].atleta_id,
+          nome: atletas[i].apelido,
+          status: atletas[i].status_id,
+          foto: atletas[i].foto,
+          iconTime: clubes[atletas[i].clube_id].escudos["60x60"],
+          idPosicao: atletas[i].posicao_id,
+          preco: atletas[i].preco_num,
+          media: atletas[i].media_num,
+          minValorizar: atletas[i].minimo_para_valorizar,
+          coef: atletas[i].preco_num/(atletas[i].minimo_para_valorizar/atletas[i].media_num)
+        }
+        jogadores.push(jogador)
+      }
     }
 
-    var g = geraGrafo(jogadores,1)
+    var g = await geraGrafo(jogadores,1)
 
-    var custoMinimo = geraCustoMinimo(g, formacao)
+    var custoMinimo = await geraCustoMinimo(g, formacao)
 
     return response.json({ custoMinimo })
   }

@@ -1,21 +1,18 @@
-import {Grafo} from '../utils/classes/Grafo'
-import {geraGrafo} from './geraGrafo'
-import {kruskal} from './kruskal'
+const kruskal = require('./kruskal');
 
-function geraEscalacao(jogadores, formacao, preco){
+async function geraEscalacao(jogadores, formacao, preco){
     var preds = []
     var suces = []
     var lista_jogadores = []
     var capitao = 0
     var precoTotal = 0
-    var g = geraGrafo(jogadores, 2)
-    var arvore = kruskal(g, formacao, preco)
+    var arvore = kruskal(jogadores, formacao, preco)
 
     for(var i=0; i<jogadores.length; i++){
-        var v = arvore.get(jogadores[i].id).pred
+        var v = arvore[jogadores[i].idJogador].pred
         if(v != null){
-            preds.add(v)
-            suces.add(jogadores[i].id)
+            preds.push(v)
+            suces.push(jogadores[i].idJogador)
         }
     }
 
@@ -26,7 +23,7 @@ function geraEscalacao(jogadores, formacao, preco){
     for(var j=0;j<ids_jogadores.length;j++){
         var jogador = jogadores.getJogador(ids_jogadores[j])
         if(jogador.mediaPontos > maiormedia){
-            capitao = jogador.id
+            capitao = jogador.idJogador
             maiormedia = jogador.mediaPontos
         }
         precoTotal = precoTotal + jogador.preco
@@ -35,3 +32,5 @@ function geraEscalacao(jogadores, formacao, preco){
 
     return [capitao, precoTotal, lista_jogadores]
 }
+
+module.exports = geraEscalacao

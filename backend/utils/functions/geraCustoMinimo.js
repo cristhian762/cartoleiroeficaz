@@ -1,26 +1,21 @@
-import {Grafo} from '../utils/classes/Grafo'
-import {geraGrafo} from './geraGrafo'
-import {kruskal} from './kruskal'
+const kruskal = require('./kruskal');
 
-function geraCustoMinimo(jogadores, formacao){
+async function geraCustoMinimo(jogadores, formacao){
     var preds = []
     var suces = []
-    var lista_jogadores = []
-    var g = geraGrafo(jogadores, 1)
-    var arvore = kruskal(g, formacao)
+    var arvore = kruskal(jogadores, formacao)
     var custoMinimo = 0
 
     for(var i=0; i<jogadores.length; i++){
-        var v = arvore.get(jogadores[i].id).pred
+        var v = arvore[jogadores[i].idJogador].pred
         if(v != null){
-            preds.add(v)
-            suces.add(jogadores[i].id)
+            preds.push(v)
+            suces.push(jogadores[i].idJogador)
         }
     }
 
     var l1 = preds.concat(suces);
     const ids_jogadores = [...l1]
-
 
     for(var j=0;j<ids_jogadores.length;j++){
         var jogador = jogadores.getJogador(ids_jogadores[j])
@@ -29,3 +24,5 @@ function geraCustoMinimo(jogadores, formacao){
 
     return custoMinimo
 }
+
+module.exports = geraCustoMinimo
