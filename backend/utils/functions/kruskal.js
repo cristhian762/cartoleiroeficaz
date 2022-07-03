@@ -42,24 +42,44 @@ async function kruskal(jogadores, formacao, preco=-1){
 
     arestas.sort((a,b) => (a.peso > b.peso ? 1 : -1))
 
+    var id_jogadores = []
     if(preco <= -1){
-        var i = 0 
+        var i = 0
         while(quant_jogadores <= 12 &&  i < arestas.length){
             var ar = arestas[i]
-            var posicao_origem = await grafo.getJogador(jogadores, ar.origem)
-            posicao_origem = posicao_origem.idPosicao
-            var posicao_destino = await grafo.getJogador(jogadores, ar.destino)
-            posicao_destino = posicao_destino.idPosicao
-            if(dVertices[ar.origem].pred == null && quant_posicao[posicao_destino-1] < maximos[posicao_destino-1] && quant_jogadores < 12){
+            var jogador_origem = await grafo.getJogador(jogadores, ar.origem)
+            var posicao_origem = jogador_origem.idPosicao
+            var jogador_destino = await grafo.getJogador(jogadores, ar.destino)
+            var posicao_destino = jogador_destino.idPosicao
+            var id_origem = jogador_origem.idJogador
+            var id_destino = jogador_destino.idJogador
+            if(dVertices[ar.origem].pred == null && quant_posicao[posicao_destino-1] < maximos[posicao_destino-1]  && quant_jogadores < 12){
                 dVertices[ar.origem].pred = ar.destino
                 dVertices[ar.origem].custo = ar.peso
-                quant_posicao[posicao_destino-1] = quant_posicao[posicao_destino-1] + 1
-                quant_jogadores++
+                if(id_jogadores.indexOf(id_destino) == -1){
+                    id_jogadores.push(id_destino)
+                    quant_posicao[posicao_destino-1]++
+                    quant_jogadores++
+                }
+                if(id_jogadores.indexOf(id_origem) == -1 && quant_posicao[posicao_origem-1] < maximos[posicao_origem-1]){
+                    id_jogadores.push(id_origem)
+                    quant_posicao[posicao_origem-1]++
+                    quant_jogadores++
+                }
+                preco_atual = preco_atual + preco_destino
             } else if (dVertices[ar.destino].pred == null && quant_posicao[posicao_origem-1] < maximos[posicao_origem-1] && quant_jogadores < 12){
-                dVertices[ar.destino].pred = ar.origem;
+                dVertices[ar.destino].pred = ar.origem
                 dVertices[ar.destino].custo = ar.peso
-                quant_posicao[posicao_origem-1] = quant_posicao[posicao_origem-1] + 1
-                quant_jogadores++
+                if(id_jogadores.indexOf(id_destino) == -1 && quant_posicao[posicao_destino-1] < maximos[posicao_destino-1]){
+                    id_jogadores.push(id_destino)
+                    quant_posicao[posicao_destino-1]++
+                    quant_jogadores++
+                }
+                if(id_jogadores.indexOf(id_origem) == -1){
+                    id_jogadores.push(id_origem)
+                    quant_posicao[posicao_origem-1]++
+                    quant_jogadores++
+                }
             }
         
             if(dVertices[ar.origem].pred == ar.destino && dVertices[ar.destino].pred == ar.origem){
@@ -69,29 +89,45 @@ async function kruskal(jogadores, formacao, preco=-1){
         }
     } else {
         var preco_atual = 0
-        var i = 0 
+        var i = 0
         while(quant_jogadores <= 12 &&  i < arestas.length){
             var ar = arestas[i]
-            var posicao_origem = await grafo.getJogador(jogadores, ar.origem)
-            posicao_origem = posicao_origem.idPosicao
-            var posicao_destino = await grafo.getJogador(jogadores, ar.destino)
-            posicao_destino = posicao_destino.idPosicao
-            var preco_destino = await grafo.getJogador(jogadores, ar.destino)
-            preco_destino = preco_destino.preco
-            var preco_origem = await grafo.getJogador(jogadores, ar.origem)
-            preco_origem = preco_origem.preco
+            var jogador_origem = await grafo.getJogador(jogadores, ar.origem)
+            var posicao_origem = jogador_origem.idPosicao
+            var jogador_destino = await grafo.getJogador(jogadores, ar.destino)
+            var posicao_destino = jogador_destino.idPosicao
+            var preco_destino = jogador_destino.preco
+            var preco_origem = jogador_origem.preco
+            var id_origem = jogador_origem.idJogador
+            var id_destino = jogador_destino.idJogador
             if(dVertices[ar.origem].pred == null && quant_posicao[posicao_destino-1] < maximos[posicao_destino-1] && preco_atual + preco_destino <= preco && quant_jogadores < 12){
                 dVertices[ar.origem].pred = ar.destino
                 dVertices[ar.origem].custo = ar.peso
-                quant_posicao[posicao_destino-1] = quant_posicao[posicao_destino-1] + 1
+                if(id_jogadores.indexOf(id_destino) == -1){
+                    id_jogadores.push(id_destino)
+                    quant_posicao[posicao_destino-1]++
+                    quant_jogadores++
+                }
+                if(id_jogadores.indexOf(id_origem) == -1 && quant_posicao[posicao_origem-1] < maximos[posicao_origem-1]){
+                    id_jogadores.push(id_origem)
+                    quant_posicao[posicao_origem-1]++
+                    quant_jogadores++
+                }
                 preco_atual = preco_atual + preco_destino
-                quant_jogadores++
             } else if (dVertices[ar.destino].pred == null && quant_posicao[posicao_origem-1] < maximos[posicao_origem-1] && preco_atual + preco_origem <= preco && quant_jogadores < 12){
-                dVertices[ar.destino].pred = ar.origem;
+                dVertices[ar.destino].pred = ar.origem
                 dVertices[ar.destino].custo = ar.peso
-                quant_posicao[posicao_origem-1] = quant_posicao[posicao_origem-1] + 1
+                if(id_jogadores.indexOf(id_destino) == -1 && quant_posicao[posicao_destino-1] < maximos[posicao_destino-1]){
+                    id_jogadores.push(id_destino)
+                    quant_posicao[posicao_destino-1]++
+                    quant_jogadores++
+                }
+                if(id_jogadores.indexOf(id_origem) == -1){
+                    id_jogadores.push(id_origem)
+                    quant_posicao[posicao_origem-1]++
+                    quant_jogadores++
+                }
                 preco_atual = preco_atual + preco_origem
-                quant_jogadores++
             }
         
             if(dVertices[ar.origem].pred == ar.destino && dVertices[ar.destino].pred == ar.origem){
@@ -101,7 +137,7 @@ async function kruskal(jogadores, formacao, preco=-1){
         }
     }
 
-    return dVertices
+    return id_jogadores
 }
 
 module.exports = kruskal
