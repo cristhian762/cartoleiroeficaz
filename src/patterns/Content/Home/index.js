@@ -3,45 +3,37 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 export default function Content() {
-  const api = axios.create({
-    baseURL: "http://localhost:3333/escalacao",
-  });
+  const [btnSubmit, setBtnSubmit] = useState("Gerar");
 
-  const [state, setState] = useState({
-    formacao: "1",
-    preco: "100",
-  });
+  const [state, setState] = useState({});
+    
+  function handleChange(event) {
+    if(event.target.name == 'lineup') {
+      state['formacao'] = event.target.value;
+    }
 
-  axios.get("http://localhost:3333/escalacao", { formacao: 1, preco: 10000 }).then((response) => {
-    console.log(response);
-  });
+    if(event.target.name == 'price') {
+      state['preco'] = event.target.value;
+    }
 
-  api.get("", { formacao: 1, preco: 10000 }).then((response) => {
-    console.log(response);
-  });
-
-  const options = {
-    method: "GET",
-    url: "http://localhost:3333/escalacao",
-    headers: { "Content-Type": "application/json" },
-    data: { formacao: 2, preco: 1000 },
-  };
-
-  axios.request(options).then(function (response) {
-    console.log(response.data);
-  });
+    setState(state);
+  }
 
   function handleSubmit(event) {
-    api
-      .get("/escalacao", { formacao: 1, preco: 10000 })
+    setBtnSubmit("Gerando ...");
+
+    console.log(state);
+
+    axios.get("http://172.19.47.21:3333/escalacao", state)
       .then((response) => {
-        console.log(response.data);
+        console.log(response);
       })
       .catch((error) => {
         console.error(error);
       })
       .finally(() => {
         console.log("finally");
+        setBtnSubmit("Gerar");
       });
 
     event.preventDefault();
@@ -59,17 +51,17 @@ export default function Content() {
             </div>
             <form className="content__inputs" onSubmit={handleSubmit}>
               <div>
-                <input type="text" className="content__input content__lineup" name="lineup" />
+                <input type="text" className="content__input content__lineup" name="lineup" onChange={handleChange} />
               </div>
               <div>
                 <label className="content__label" htmlFor="input-value">
                   VALOR MÁXIMO
                 </label>
-                <input type="text" className="content__input content__value" id="input-value" name="value" placeholder="__________________" />
+                <input type="text" className="content__input content__price" id="input-price" name="price" placeholder="__________________" onChange={handleChange} />
               </div>
               <div>
                 <button type="submit" className="content__input content__button">
-                  Gerar
+                  {btnSubmit}
                 </button>
               </div>
             </form>
@@ -88,6 +80,8 @@ export default function Content() {
                   <div className="content__col_2">MARCELO BOECK</div>
                   <div className="content__col_3">C$ 4.00</div>
                 </div>
+
+                <div className="loading"></div>
               </div>
             </div>
           </div>
@@ -164,7 +158,7 @@ export default function Content() {
             width: 115px;
           }
 
-          .content__value {
+          .content__price {
             padding: 0 5px 0 5px;
             height: 39px;
             margin: 0 10px;
@@ -176,6 +170,10 @@ export default function Content() {
             font-size: 1.2rem;
             margin: 0 0 0 37px;
             width: 124px;
+          }
+
+          .content__button:hover {
+            background-color: #373737;
           }
 
           .content__line {
@@ -198,6 +196,26 @@ export default function Content() {
 
           .content__col_3 {
             width: 20%;
+          }
+
+          .loading {
+            border: 5px solid black;
+            border-radius: 50%;
+            border-top: 5px solid #373737;
+            height: 50px;
+            width: 50px;
+
+            animation: ani_loading 1s infinite ease;
+          }
+
+          @keyframes ani_loading {
+            from {
+              transform: rotate(0deg);
+            }
+
+            to {
+              transform: rotate(360deg);
+            }
           }
         `}
       </style>
