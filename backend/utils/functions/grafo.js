@@ -26,5 +26,19 @@ module.exports = {
             }
         }
         return peso
+    },
+
+    async maisCaro(grafo, lista){
+        var mais_caro = 0
+        var preco = 0
+        for(var elem of lista){
+            var jogador = this.getJogador(grafo, elem)
+            var preco_jogador = jogador.preco
+            if(preco_jogador > preco){
+                preco = preco_jogador
+                mais_caro = elem
+            }
+        }
+        return elem
     }
 }

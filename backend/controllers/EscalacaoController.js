@@ -34,6 +34,11 @@ module.exports = {
 
     var escalacao = await geraEscalacao(g, formacao, preco)
 
+    if(escalacao == 0){
+      g = await geraGrafo(jogadores,1)
+      var escalacao = await geraEscalacao(g, formacao, -1)
+    }
+
     return response.json({ escalacao })
   }
 }
