@@ -31,11 +31,11 @@ module.exports = {
 
     var g = await geraGrafo(jogadores, 2);
 
-    var escalacao = await geraEscalacao(g, formacao, preco);
+    var escalacao = await geraEscalacao(g, parseInt(formacao), parseFloat(preco));
 
     if (escalacao == 0) {
       g = await geraGrafo(jogadores, 1);
-      var escalacao = await geraEscalacao(g, formacao, -1);
+      var escalacao = await geraEscalacao(g, parseInt(formacao), -1);
     }
 
     return response.json({ escalacao });
