@@ -2,15 +2,15 @@ const kruskal = require('./kruskal');
 const grafo = require('./grafo');
 
 async function geraEscalacao(jogadores, formacao, preco){
-    var lista_jogadores = []
-    var capitao = 0
-    var precoTotal = 0
-    var escalacao = await kruskal(jogadores, formacao, preco)
+    let lista_jogadores = []
+    let capitao = 0
+    let precoTotal = 0
+    let escalacao = await kruskal(jogadores, formacao, preco)
 
     if(escalacao != 0){
-        var maiormedia = -100
-        for(var j=0;j<escalacao.length;j++){
-            var jogador = await grafo.getJogador(jogadores, escalacao[j])
+        let maiormedia = -100
+        for(let j=0;j<escalacao.length;j++){
+            let jogador = await grafo.getJogador(jogadores, escalacao[j])
             if(jogador.idPosicao != 6 && jogador.media > maiormedia){
                 capitao = jogador.idJogador
                 maiormedia = jogador.media

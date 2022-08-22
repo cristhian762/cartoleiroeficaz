@@ -1,21 +1,21 @@
 const grafo = require('./grafo');
 
 async function kruskal(jogadores, formacao, preco=-1){
-    var dVertices = {}
-    var vertices = []
-    var arestas = []
-    var escalacoes = [[0,3,4,3], [0,3,5,2], [2,2,3,3], [2,2,4,2], [2,2,5,1], [2,3,3,2], [2,3,4,1]]
+    let dVertices = {}
+    let vertices = []
+    let arestas = []
+    let escalacoes = [[0,3,4,3], [0,3,5,2], [2,2,3,3], [2,2,4,2], [2,2,5,1], [2,3,3,2], [2,3,4,1]]
 
-    var maximos = [1,escalacoes[formacao-1][0],escalacoes[formacao-1][1],escalacoes[formacao-1][2],escalacoes[formacao-1][3],1]
-    var quant_posicao = [0,0,0,0,0,0]
-    var quant_jogadores = 0
+    let maximos = [1,escalacoes[formacao-1][0],escalacoes[formacao-1][1],escalacoes[formacao-1][2],escalacoes[formacao-1][3],1]
+    let quant_posicao = [0,0,0,0,0,0]
+    let quant_jogadores = 0
 
-    var vs = jogadores.vertices
+    let vs = jogadores.vertices
 
-    var a = {}
-    var id = 0
+    let a = {}
+    let id = 0
 
-    for(var ver of vs){
+    for(let ver of vs){
         a = {
             pred: null, 
             custo: 9999999
@@ -25,11 +25,11 @@ async function kruskal(jogadores, formacao, preco=-1){
         vertices.push(id)
     }
 
-    var peso = 0
-    var b = {}
-    for(var ver of vs){
-        var vizinhos = await grafo.getVizinhos(jogadores, ver.idJogador)
-        for(var viz of vizinhos){
+    let peso = 0
+    let b = {}
+    for(let ver of vs){
+        let vizinhos = await grafo.getVizinhos(jogadores, ver.idJogador)
+        for(let viz of vizinhos){
             peso = await grafo.findEdge(jogadores, ver.idJogador, viz)
             b = {
                 origem: ver.idJogador,
@@ -42,17 +42,18 @@ async function kruskal(jogadores, formacao, preco=-1){
 
     arestas.sort((a,b) => (a.peso > b.peso ? 1 : -1))
 
-    var id_jogadores = []
+    let id_jogadores = []
+    let limite = 0
     if(preco <= -1){
-        var i = 0
+        let i = 0
         while(quant_jogadores < 12){
-            var ar = arestas[i]
-            var jogador_origem = await grafo.getJogador(jogadores, ar.origem)
-            var posicao_origem = jogador_origem.idPosicao
-            var jogador_destino = await grafo.getJogador(jogadores, ar.destino)
-            var posicao_destino = jogador_destino.idPosicao
-            var id_origem = jogador_origem.idJogador
-            var id_destino = jogador_destino.idJogador
+            let ar = arestas[i]
+            let jogador_origem = await grafo.getJogador(jogadores, ar.origem)
+            let posicao_origem = jogador_origem.idPosicao
+            let jogador_destino = await grafo.getJogador(jogadores, ar.destino)
+            let posicao_destino = jogador_destino.idPosicao
+            let id_origem = jogador_origem.idJogador
+            let id_destino = jogador_destino.idJogador
             if(dVertices[ar.origem].pred == null && quant_posicao[posicao_destino-1] < maximos[posicao_destino-1]  && quant_jogadores < 12){
                 dVertices[ar.origem].pred = ar.destino
                 dVertices[ar.origem].custo = ar.peso
@@ -88,37 +89,36 @@ async function kruskal(jogadores, formacao, preco=-1){
             i++
         }
     } else {
-        var preco_atual = 0
-        var i = 0
-        var bad = []
-        var limite = 0
+        let preco_atual = 0
+        let i = 0
+        let bad = []
         while(quant_jogadores < 12 && limite < 50){
             if(i==arestas.length){
                 limite++
                 i = 0
-                var mais_caro = grafo.maisCaro(jogadores, id_jogadores)
-                var jg = id_jogadores.pop()
+                let mais_caro = grafo.maisCaro(jogadores, id_jogadores)
+                let jg = id_jogadores.pop()
                 bad.push(mais_caro)
-                var retira_jogador = await grafo.getJogador(jogadores, jg)
-                var posicao_retira = retira_jogador.idPosicao
-                var preco_retira = retira_jogador.preco
+                let retira_jogador = await grafo.getJogador(jogadores, jg)
+                let posicao_retira = retira_jogador.idPosicao
+                let preco_retira = retira_jogador.preco
                 quant_posicao[posicao_retira-1]--
                 quant_jogadores--
                 preco_atual = preco_atual - preco_retira
-                var index = id_jogadores.indexOf(mais_caro);
+                let index = id_jogadores.indexOf(mais_caro);
                 if (index !== -1) {
                     id_jogadores.splice(index, 1);
                 }
             }
-            var ar = arestas[i]
-            var jogador_origem = await grafo.getJogador(jogadores, ar.origem)
-            var posicao_origem = jogador_origem.idPosicao
-            var jogador_destino = await grafo.getJogador(jogadores, ar.destino)
-            var posicao_destino = jogador_destino.idPosicao
-            var preco_destino = jogador_destino.preco
-            var preco_origem = jogador_origem.preco
-            var id_origem = jogador_origem.idJogador
-            var id_destino = jogador_destino.idJogador
+            let ar = arestas[i]
+            let jogador_origem = await grafo.getJogador(jogadores, ar.origem)
+            let posicao_origem = jogador_origem.idPosicao
+            let jogador_destino = await grafo.getJogador(jogadores, ar.destino)
+            let posicao_destino = jogador_destino.idPosicao
+            let preco_destino = jogador_destino.preco
+            let preco_origem = jogador_origem.preco
+            let id_origem = jogador_origem.idJogador
+            let id_destino = jogador_destino.idJogador
             if(bad.indexOf(id_destino) == -1 && dVertices[ar.origem].pred == null && quant_posicao[posicao_destino-1] < maximos[posicao_destino-1] && preco_atual + preco_destino <= preco && quant_jogadores < 12){
                 dVertices[ar.origem].pred = ar.destino
                 dVertices[ar.origem].custo = ar.peso

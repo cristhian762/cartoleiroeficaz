@@ -8,13 +8,13 @@ module.exports = {
     const apiResponse = await axios.get('https://api.cartola.globo.com/atletas/mercado')
     const mercado = apiResponse.data
     const { formacao } = request.body
-    var jogadores = []
+    let jogadores = []
 
-    var atletas = mercado.atletas
-    var clubes = mercado.clubes
-    for(var i=0; i<atletas.length; i++){
+    let atletas = mercado.atletas
+    let clubes = mercado.clubes
+    for(let i=0; i<atletas.length; i++){
       if(atletas[i].status_id == 7){
-        var jogador = {
+        let jogador = {
           idJogador: atletas[i].atleta_id,
           nome: atletas[i].apelido,
           status: atletas[i].status_id,
@@ -30,9 +30,9 @@ module.exports = {
       }
     }
 
-    var g = await geraGrafo(jogadores,1)
+    let g = await geraGrafo(jogadores,1)
 
-    var custoMinimo = await geraCustoMinimo(g, formacao)
+    let custoMinimo = await geraCustoMinimo(g, formacao)
 
     return response.json({ custoMinimo })
   }
