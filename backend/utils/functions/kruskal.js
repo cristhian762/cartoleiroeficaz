@@ -67,7 +67,6 @@ async function kruskal(jogadores, formacao, preco=-1){
                     quant_posicao[posicao_origem-1]++
                     quant_jogadores++
                 }
-                preco_atual = preco_atual + preco_destino
             } else if (dVertices[ar.destino].pred == null && quant_posicao[posicao_origem-1] < maximos[posicao_origem-1] && quant_jogadores < 12){
                 dVertices[ar.destino].pred = ar.origem
                 dVertices[ar.destino].custo = ar.peso

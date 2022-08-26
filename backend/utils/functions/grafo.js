@@ -39,6 +39,6 @@ module.exports = {
                 mais_caro = elem
             }
         }
-        return elem
+        return mais_caro
     }
 }
